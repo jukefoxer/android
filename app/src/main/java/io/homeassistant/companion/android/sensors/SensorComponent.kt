@@ -13,6 +13,8 @@ interface SensorComponent {
 
     fun inject(sensorReceiver: SensorReceiver)
 
+    fun inject(settingsObserver: SettingsContentObserver)
+
     fun inject(sensorsSettingsFragment: SensorsSettingsFragment)
 
     fun inject(sensorDetailFragment: SensorDetailFragment)

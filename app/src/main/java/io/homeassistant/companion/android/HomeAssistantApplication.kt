@@ -8,7 +8,9 @@ import android.content.IntentFilter
 import android.media.AudioManager
 import android.net.wifi.WifiManager
 import android.os.Build
+import android.os.Handler
 import android.os.PowerManager
+import android.provider.Settings
 import android.telephony.TelephonyManager
 import io.homeassistant.companion.android.common.dagger.AppComponent
 import io.homeassistant.companion.android.common.dagger.Graph
@@ -16,6 +18,7 @@ import io.homeassistant.companion.android.common.dagger.GraphComponentAccessor
 import io.homeassistant.companion.android.database.AppDatabase
 import io.homeassistant.companion.android.sensors.LastUpdateManager
 import io.homeassistant.companion.android.sensors.SensorReceiver
+import io.homeassistant.companion.android.sensors.SettingsContentObserver
 import io.homeassistant.companion.android.widgets.button.ButtonWidget
 import io.homeassistant.companion.android.widgets.entity.EntityWidget
 import io.homeassistant.companion.android.widgets.media_player_controls.MediaPlayerControlsWidget
@@ -92,6 +95,10 @@ open class HomeAssistantApplication : Application(), GraphComponentAccessor {
             sensorReceiver,
             IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
         )
+
+        // Listen to changes of the music volume
+        val mSettingsContentObserver = SettingsContentObserver(Handler(mainLooper), this@HomeAssistantApplication)
+        applicationContext.contentResolver.registerContentObserver(Settings.System.CONTENT_URI, true, mSettingsContentObserver)
 
         // Listen to changes to the audio input/output on the device
         registerReceiver(

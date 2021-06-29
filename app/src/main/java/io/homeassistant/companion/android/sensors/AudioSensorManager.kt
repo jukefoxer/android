@@ -58,7 +58,7 @@ class AudioSensorManager : SensorManager {
             R.string.sensor_name_volume_call,
             R.string.sensor_description_volume_call
         )
-        private val volMusic = SensorManager.BasicSensor(
+        val volMusic = SensorManager.BasicSensor(
             "volume_music",
             "sensor",
             R.string.sensor_name_volume_music,
